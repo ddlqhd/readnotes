@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "[Effective C#] 第1章 C#语言的编程习惯"
+title:  "[Effective C#] 第1条：优先使用隐式类型的局部变量"
 date:   2023-04-22 22:09:17 +0800
 categories: c#
 ---
@@ -25,4 +25,31 @@ var result = someObj.DoSomeWork(parameter); // bad
 var f = GetMagicNumber();
 var total = 100 * f / 6;
 {% endhighlight %}
-此情况下total的类型由f的类型决定，同时表达式的精度也有f决定，而f又是编译器根据GetMagicNumber()函数的返回值类型推断出来的。因此，**用隐式类型的局部变量来表示数值的时候要多加小心**，因为可能会发生很多隐式转换，这不仅容易令阅读代码的人产生误解，而且其中某些转换还会令精确度下降。
+此情况下total的类型由f的类型决定，同时表达式的精度也有f决定，而f又是编译器根据GetMagicNumber()函数的返回值类型推断出来的，此时如果明确指定f的变量类型，可能两种结果：一是GetMagicNumber()可以隐式转换到f的类型，此时程序正常运行；二是，GetMagicNumber()无法隐式转换到f的类型，此时编译器会报错，但是不管哪种情况，维护人员可以通过明确的类型来更容易的发现代码的问题。因此，**用隐式类型的局部变量来表示数值的时候要多加小心**，因为可能会发生很多隐式转换，这不仅容易令阅读代码的人产生误解，而且其中某些转换还会令精确度下降。
+
+但是，相反有些情况下，编译器所选择的类型可能比开发者选择的类型更合理。
+{% highlight csharp %}
+public IEnumerab1e<string> FindCustomersStartingWith1(string Start)
+{
+    IEnumerab1e<string> q = 
+        from c in db.Customers
+        select c.ContactName;
+    var q2 = q.Where(s => s.StartsWith(start));
+    return q2;
+}
+{% endhighlight %}
+这段代码有严重的性能问题。第一行查询语句会把每一个人的姓名都从数据库里取出来，由于它要查询数据库，因此，其返回值实际上是IQueryable<string>类型，但是开发者却把保存该返回值的变量q声明成了IEnumerable<string>类型。由于IQueryable<T>继承自IEnumerable<T>，因此编译器并不会报错，但是这样做将导致后续的代码无法使用由IQueryable所提供的某些特性。接下来的那行查询语句，就受到了这样的影响，它本来可以使用Queryable.Where去查询，但是却用了Enumerable.Where。如果开发者不把变量q的类型明确指定为IEnumerable<string>，那么编译器就可以将其设为更加合适的IQueryable<string>类型了。假如IQueryable<string>不能隐式地转换成IEnumerable<string>，那么刚才那种写法会令编译器报错。但实际上是可以完成隐式转换的，因此编译器不会报错，这使得开发者容易忽视由此引发的性能问题。
+
+如果使用var自动类型推导，q的类型编译器会指定为IQueryable<string>类型，IQueryable能够把与数据查询有关的多个表达式树组合成一项操作，以便一次执行完毕，而且通常是在存放数据的远程服务器上面执行的。
+{% highlight csharp %}
+public IEnumerab1e<string> FindCustomersStartingWith1(string Start)
+{
+    var q = 
+        from c in db.Customers
+        select c.ContactName;
+    var q2 = q.Where(s => s.StartsWith(start));
+    return q2;
+}
+{% endhighlight %}
+
+写程序的时候，如果发现编译器自动选择的类型有可能令人误解代码的含义，使其无法立刻看出这个局部变量的准确类型，那么就应该把类型明确指出来，而不要采用var来声明。反之，如果读代码的人根据代码本身的语义所推测出的类型与编译器自动选择的类型相符，那就可以用var来声明。例如对int、float、double等数值型的变量，就应该明确指出其类型，而对其他变量则不妨使用var来声明。
