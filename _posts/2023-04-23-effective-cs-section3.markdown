@@ -3,6 +3,7 @@ layout: post
 title:  "[Effective C#] 第3条：优先考虑is或as运算符，尽量少用强制类型转换"
 date:   2023-04-23 21:47:00 +0800
 categories: c#
+tag: Effective C#
 ---
 
 有些场景下需要在运行期进行类型转换（比如：框架代码使用object作为参数），此时有两种办法能够实现转换，

@@ -3,6 +3,7 @@ layout: post
 title:  "[Effective C#] 第4条：用内插字符串取代string.Format()"
 date:   2023-04-29 22:26:00 +0800
 categories: c#
+tag: Effective C#
 ---
 
 ## string.Format的问题

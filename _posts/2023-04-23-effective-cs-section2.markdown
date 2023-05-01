@@ -3,6 +3,7 @@ layout: post
 title:  "[Effective C#] 第2条：考虑用readonly代替const"
 date:   2023-04-23 21:17:00 +0800
 categories: c#
+tag: Effective C#
 ---
 
 C#有两种常量，一种是编译期（const）的常量，另一种是运行期（readonly）的常量，编译期的常量虽然能令程序运行得稍快一点，但却远不如运行期的常量那样灵活。只有当程序**性能极端重要且常量取值不会随版本而变化**的情况下，才可以考虑选用这种常量。
