@@ -2,7 +2,7 @@
 layout: post
 title:  "[Effective C#] 第3条：优先考虑is或as运算符，尽量少用强制类型转换"
 date:   2023-04-23 21:47:00 +0800
-categories: c#
+categories: effective-cs
 tag: Effective C#
 ---
 

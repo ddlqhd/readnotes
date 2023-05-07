@@ -2,7 +2,7 @@
 layout: post
 title:  "[Effective C#] 第7条：用委托表示回调"
 date:   2023-05-07 11:44:00 +0800
-categories: c#
+categories: effective-cs
 tag: Effective C#
 ---
 

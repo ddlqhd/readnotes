@@ -2,7 +2,7 @@
 layout: post
 title:  "[Effective C#] 第2条：考虑用readonly代替const"
 date:   2023-04-23 21:17:00 +0800
-categories: c#
+categories: effective-cs
 tag: Effective C#
 ---
 

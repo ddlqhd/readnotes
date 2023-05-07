@@ -2,7 +2,7 @@
 layout: post
 title:  "[Effective C#] 第6条：不要用表示符号名称的硬字符串来调用API"
 date:   2023-05-07 09:14:00 +0800
-categories: c#
+categories: effective-cs
 tag: Effective C#
 ---
 

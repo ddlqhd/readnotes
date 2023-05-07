@@ -2,7 +2,7 @@
 layout: post
 title:  "[Effective C#] 第5条：用FormattableString取代专门为特定区域而写的字符串"
 date:   2023-05-02 00:11:00 +0800
-categories: c#
+categories: effective-cs
 tag: Effective C#
 ---
 
